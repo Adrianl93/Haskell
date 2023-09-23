@@ -46,4 +46,14 @@ absoluto x | x > 0 = x
 esMultiplo2 :: Int -> Bool
 esMultiplo2 x = mod x 2  == 0
 
+--Ejercicio 8
+--Definí la función esMultiploDe : Num→ Num→ Bool , que devuelve True si el segundo es múltiplo del primero. Ejemplo: esMultiploDe 3 12 = True.
 
+esMultiploDe :: Int -> Int -> Bool
+esMultiploDe x y = mod y x == 0
+
+-- Ejercicio 9
+-- Definí la función esBisiesto: Num→ Bool , que indica si un año es bisiesto. Un año es bisiesto si es divisible por 400 o es divisible por 4 pero no es divisible por 100.
+
+esBisiesto :: Int -> Bool
+esBisiesto x = (mod x 400 == 0 || mod x 4 == 0) && (mod x 100 /= 0)
