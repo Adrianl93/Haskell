@@ -70,3 +70,19 @@ min3 x y z = min z (min x y)
 
 dispersion :: Int -> Int -> Int -> Int
 dispersion x y z =max3 x y z - min3 x y z
+
+
+--Ejercicio 11: Definí la función celsiusToFahr : Num→ Num, pasa una temperatura en grados Celsius a grados Fahrenheit. Para realizar la conversión hay que multiplicar por 1.8 y sumar 32.
+
+celsiusToFahr :: Float -> Float
+celsiusToFahr x = (x * 1.8) + 32
+
+-- Ejercicio 12: Definí la función fahrToCelsius : Num→ Num, la inversa de la anterior. Para realizar la conversión hay que primero restar 32 y después dividir por 1.8.
+
+fahrToCelsius :: Float -> Float
+fahrToCelsius x = (x -32) / 1.8
+
+-- Ejercicio 13: Definí la función haceFrioF : Num→ Bool , indica si una temperatura expresada en grados Fahrenheit es fría. Decimos que hace frío si la temperatura es menor a 8 grados Celsius.
+
+haceFrioF :: Float -> Bool
+haceFrioF x = fahrToCelsius x < 8
