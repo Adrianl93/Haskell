@@ -57,3 +57,16 @@ esMultiploDe x y = mod y x == 0
 
 esBisiesto :: Int -> Bool
 esBisiesto x = (mod x 400 == 0 || mod x 4 == 0) && (mod x 100 /= 0)
+
+
+--Ejercicio 10
+--Definí la función dispersion : Num→ Num→ Num→ Num, que toma los tres valores y devuelve la diferencia entre el más alto y el más bajo. Ayuda: extender max y min a tres argumentos, usando las versiones de dos elementos. De esa forma se puede definir dispersión sin escribir ninguna guarda (las guardas están en max y min, que estamos usando).
+
+max3 :: Int -> Int -> Int -> Int
+max3 x y z = max z (max x y) 
+
+min3 :: Int -> Int -> Int -> Int
+min3 x y z = min z (min x y) 
+
+dispersion :: Int -> Int -> Int -> Int
+dispersion x y z =max3 x y z - min3 x y z
