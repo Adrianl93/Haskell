@@ -86,3 +86,65 @@ fahrToCelsius x = (x -32) / 1.8
 
 haceFrioF :: Float -> Bool
 haceFrioF x = fahrToCelsius x < 8
+
+-- Ejercicio 14: Definí las funciones que describimos a continuación, luego implementalas en Haskell.
+
+-- a) segundo3 : (Num, Num, Num) → Num, que dada una terna de enteros devuelve su segundo elemento.
+segundo3 :: (Int, Int,  Int) -> Int
+segundo3 (x, y, z) = y
+
+--b) ordena : (Num, Num) → (Num, Num), que dados dos enteros los ordena de menor a mayor.
+ordena :: (Int, Int ) -> (Int, Int)
+ordena (x, y) = (min x y, max x y)
+
+-- c) rangoPrecioParametrizado : Num → (Num, Num) → String que dado un número x, que representa el precio de un producto, y un par (menor, mayor) que represente el rango de precios que uno espera encontrar, retorne “muy barato” si x está por debajo del rango, “demasiado caro” si está por arriba del rango, “hay que verlo bien” si el precio está en el rango, y “esto no puede ser!” si x es negativo.
+
+rangoPrecioParametrizado :: Int -> (Int, Int) -> String
+rangoPrecioParametrizado x (y, z) | x < min y z && x > 0= "muy barato"
+                                  | x > max y z = "demasiado caro"
+                                  | x < max y z && x > min y z = "hay que verlo bien"
+                                  | x < 0 = "esto no puede ser"
+
+--d) mayor3 : (Num, Num, Num) → (Bool , Bool , Bool ), que dada una una terna de enteros devuelve una terna de valores booleanos que indica si cada uno de los enteros es mayor que 3.
+
+mayor3 :: (Int, Int, Int) -> (Bool, Bool, Bool)
+mayor3 (x, y, z) = (x > 3, y > 3,z > 3)
+
+-- e) todosIguales : (Num, Num, Num) → Bool que dada una terna de enteros devuelva True si todos sus elementos son iguales y False en caso contrario.
+todosIguales :: (Int, Int, Int ) -> Bool
+todosIguales (x, y, z) = x==y && x==z && z==y
+
+-- f) notaPromedio : (String, Num, Num, Num) → Num que dada una tupla que representa el nombre de un/a estudiante y las notas que sacó en cada parcial, calcule la nota promedio.
+-- Por ejemplo: notaPromedio.(“Joaquín”, 10, 5, 7) = 7,33 
+
+notaPromedio :: (String, Float, Float, Float) -> Float
+notaPromedio (a, x, y, z) = (x + y + z) / 3
+
+
+-- g) condicionFinal : (String, Num, Num, Num) → String que dada una tupla que representa el nombre de un/a estudiante y las notas que sacó en cada parcial, devuelva “promoción” si las 3 notas son mayores a 7, “regular” si no promociona pero las 3 notas son mayores a 4, y “libre” en caso contrario. 
+-- Por ejemplo:   condicionFinal.(“Juan”, 10, 5, 7) = “regular”  
+-- condicionFinal.(“María”, 10, 8, 7) = “promoción”
+
+promoción :: (Float, Float, Float) -> Bool
+promoción (x, y, z) = x >= 7 && y >=7 && z >= 7
+
+regular :: (Float, Float, Float) -> Bool
+regular (x, y, z) =  x >=4  &&  y >=4  && z >=4
+
+libre :: (Float, Float, Float) -> Bool
+libre (x, y, z) = (x < 4 || y < 4 || z < 4) && x > 0 && y > 0 && z > 0
+
+
+
+condicionFinal :: (String, Float, Float, Float) -> String
+condicionFinal (a, x, y, z) | promoción (x, y, z) = "Promoción"
+                            | regular (x, y, z)= "Regular"
+                            | libre (x, y, z) = "libre"
+                            | otherwise = "No puede ser"
+
+--h) condicionFinalEstudiante : (String, Num, Num, Num) → (String, String) que dada una tupla que representa el nombre de un/a estudiante y las notas que sacó en cada parcial, devuelva un par con el nombre del/la estudiante y la condición final como la calculada en el ejercicio anterior. 
+-- Por ejemplo:   condicionFinal.(“Juan”, 10, 5, 7) = (“Juan”, “regular”)  
+-- condicionFinal.(“María”, 10, 8, 7) = (“María”, “promoción”)
+
+condicionFinalEstudiante :: ( String, Float, Float, Float) -> (String, String)
+condicionFinalEstudiante( a, x, y, z) = (a,condicionFinal( a, x, y, z))
