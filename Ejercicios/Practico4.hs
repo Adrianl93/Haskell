@@ -101,3 +101,36 @@ mayoresQue :: Int -> [Int] -> [Int]
 mayoresQue b [] = []
 mayoresQue b (x:xs) | x > b = x : mayoresQue b xs
                     | x <= b = mayoresQue b xs
+
+
+-- Ejercicio 8: Definí recursivamente los operadores básicos de listas: #, ! , ◃, ↑, ↓, ⧺ . Para los operadores ↑, ↓ y !, deberás hacer recursión en ambos parámetros, en el parámetro lista y en el parámetro numérico
+
+cardinal :: [a] -> Int
+cardinal [] = 0
+cardinal (x:xs) = 1 + cardinal xs
+
+indice :: [a] -> Int -> a
+indice (x:xs) b | b > 0 = indice xs (b-1) 
+                | b == 0 = x
+
+pegarIzq :: [a] -> a -> [a]
+pegarIzq [] y = [y]
+pegarIzq (x:xs) y = y: x : xs
+
+pegarDer :: [a] -> a -> [a]
+pegarDer [] y = [y]
+pegarDer (x:xs) y = (x : xs) ++ [y]
+
+tomar :: Int -> [a] -> [a]
+tomar y [] = []
+tomar y (x : xs) | y > 0 = x : tomar (y-1) xs 
+                 | y == 0 = []
+
+tirar :: Int -> [a] -> [a]
+tirar y [] = []
+tirar y (x : xs) | y < length (x : xs) =  tirar y xs 
+                 | y <= length (x : xs) = (x : xs)
+
+concatenar :: [a] -> [a] -> [a]
+concatenar [] ys = ys
+concatenar (x:xs) ys = x : concatenar xs ys
