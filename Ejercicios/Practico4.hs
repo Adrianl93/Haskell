@@ -134,3 +134,57 @@ tirar y (x : xs) | y < length (x : xs) =  tirar y xs
 concatenar :: [a] -> [a] -> [a]
 concatenar [] ys = ys
 concatenar (x:xs) ys = x : concatenar xs ys
+
+
+-- Funciones recursivas de sobre los números naturales
+-- Ejercicio 9: ¿Qué hacen las siguientes funciones?
+-- Ayuda: Evaluá las funciones para algunos valores.
+
+
+-- a)           h: Nat → Nat
+-- h.0         ≐ 0
+-- h.(n+1) ≐ 2 + h.n
+
+h :: Int -> Int
+h 0 = 0
+h n = 2 + h (n-1)
+
+-- duplica cualquier n
+
+-- b)           g: Nat → Bool
+-- g.0         ≐ True
+-- g.1         ≐ False
+-- g.(n+2) ≐ g.n
+
+g :: Int -> Bool
+g 0 = True
+g 1 = False
+g n = g (n-2)
+
+-- si n es par devuelve False, si n es Impar devuelve True
+
+-- Ejercicio 10: Definí recursivamente las siguientes funciones de Naturales en Naturales
+
+-- a) la función acumular: Nat → Nat, que dado un Natural n devuelve la suma de todos los naturales menores o iguales a n.
+acumular :: Int -> Int
+acumular 0 = 0
+acumular x = x + (acumular (x-1))
+
+-- b) la función factorial: Nat → Nat, que dado un Natural n devuelve el factorial de n.
+
+factorial :: Int -> Int
+factorial 1 = 1
+factorial x = x * (factorial (x-1))
+-- c) la función sumaCuadrados: Nat → Nat, que dado un Natural n devuelve la suma de todos los naturales menores o iguales a n elevados al cuadrado.
+
+sumaCuadrados :: Int -> Int
+sumaCuadrados 1  = 1  
+sumaCuadrados x  = (x * x) + sumaCuadrados (x-1)
+
+
+-- d) la función repetir: Nat → Nat → Nat, que dado dos naturales n y m, suma n veces el número m.
+
+repetir :: Int -> Int -> Int
+repetir 1 m = m
+repetir n m = m + repetir (n-1) m
+
