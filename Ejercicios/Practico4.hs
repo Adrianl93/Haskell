@@ -193,3 +193,41 @@ repetir n m = m + repetir (n-1) m
 potencia :: Int -> Int -> Int
 potencia b 1 = b
 potencia b p = b *  potencia b (p-1) 
+
+
+-- Problemas
+-- Los siguientes problemas son un poco más complejos que los que se vieron, especialmente porque se parecen más a los problemas a los que nos enfrentamos en la vida real. Se resuelven desarrollando programas funcionales; es decir, se pueden plantear como la búsqueda de un resultado a partir de ciertos datos (argumentos). Para ello, será necesario en primer lugar descubrir los tipos de los argumentos y del resultado que necesitamos. Luego combinaremos la mayoría de las técnicas estudiadas hasta ahora: modularización (dividir un problema complejo en varias tareas intermedias), análisis por casos, e identificar qué clase de funciones de lista (cuando corresponda) son las que necesitamos: map, filter o bien fold.
+
+-- Ejercicio 16: Definí funciones por recursión para cada una de las siguientes descripciones. Luego, implementarlas en Haskell.
+-- a) listasIguales : [A] → [A] → Bool, que determina si dos listas son iguales, es decir, contienen los mismos elementos en las mismas posiciones respectivamente.
+-- Por ejemplo: 	listasIguales.[1, 2, 3].[1, 2, 3] = True, 
+-- listasIguales.[1, 2, 3, 4].[1, 3, 2, 4] = False
+
+listasIguales :: Eq a => [a] -> [a] -> Bool
+listasIguales [] [] = True
+listasIguales x [] = False
+listasIguales [] x = False
+listasIguales (x:xs) (y:ys) = (x == y) && (listasIguales xs ys)
+
+-- b) mejorNota : [(String, Int, Int, Int)] → [(String, Int)], que selecciona la nota más alta de cada alumno. 
+-- Por ejemplo: mejorNota.[(“Matias”,7,7,8),(“Juan”,10,6,9),(“Lucas”,2,10,10)] =
+-- [(“Matias”,8),(“Juan”,10),(“Lucas”,10)]
+
+mejorNota :: [(String, Int, Int, Int)] -> [(String, Int)]
+mejorNota [] = []
+mejorNota ((b,x,y,z):xs) = (b, max x (max y z)) : mejorNota xs
+
+-- c) incPrim : [(Int, Int)] → [(Int, Int)], que dada una lista de pares de enteros, le suma 1 al primer número de cada par.
+-- Por ejemplo: 	incPrim.[(20, 5), (50, 9)] = [(21, 5), (51, 9)] 
+-- incPrim.[(4, 11), (3, 0)] = [(5, 11), (4, 0)]
+
+incPrim :: [(Int,Int)] -> [(Int,Int)]
+incPrim [] = []
+incPrim ((x,y):xs) = ((x+1), y) : incPrim xs
+
+-- d) expandir : String → String, pone espacios entre cada letra de una palabra.
+-- Por ejemplo: expandir."hola" = "h o l a" (¡sin espacio al final!).
+expandir :: String -> String
+expandir [] = []
+expandir [x] = [x]
+expandir (x:xs) = x : ' ' : expandir xs  
