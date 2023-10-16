@@ -188,3 +188,8 @@ repetir :: Int -> Int -> Int
 repetir 1 m = m
 repetir n m = m + repetir (n-1) m
 
+-- Ejercicio 12:  Utilizando la multiplicación, definir la función potencia, que dado dos naturales b y p devuelve b^p .
+
+potencia :: Int -> Int -> Int
+potencia b 1 = b
+potencia b p = b *  potencia b (p-1) 
