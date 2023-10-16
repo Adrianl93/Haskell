@@ -6,6 +6,7 @@
 -- contar.(x ▹ xs) ≐ 1 + contar.xs
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use foldr" #-}
+{-# HLINT ignore "Use map" #-}
 
 
 
@@ -45,3 +46,27 @@ todosMenores10 (x : xs) = x < 10 && todosMenores10 xs
 hay0 :: [Int] -> Bool
 hay0 []         = False
 hay0 (x : xs) = x == 0 || hay0 xs
+
+-- Ejercicio 6: Una función map es aquella que dada una lista devuelve otra lista cuyos elementos son los que se obtienen de aplicar una función a cada elemento de la primera en el mismo orden y con las mismas repeticiones (si las hubiere). Por ejemplo: duplica : [Int] → [Int] devuelve cada elemento de la lista multiplicado por 2.
+-- Definí recursivamente las siguientes funciones map.
+
+--a) sumar1: [Int] → [Int], que dada una lista de enteros le suma uno a cada uno de sus elementos. 
+-- Por ejemplo: sumar1.[3, 0, −2] = [4, 1, −1]
+sumar1 :: [Int] -> [Int]
+sumar1 [] = []
+sumar1 (x:xs) = (x+ 1) : sumar1 xs
+
+-- b) duplica: [Int] → [Int], que dada una lista de enteros duplica cada uno de sus elementos.
+-- Por ejemplo: duplica.[3, 0, −2] = [6, 0, −4]
+
+duplica :: [Int] -> [Int]
+duplica [] = []
+duplica (x:xs) = (x * 2) : duplica xs
+
+-- c) multiplica: Int → [Int] → [Int], que dado un número n y una lista, multiplica cada uno de los elementos por n.
+-- Por ejemplo: multiplica.3.[3, 0, −2] = [9, 0, −6]
+multiplica :: Int -> [Int] -> [Int]
+multiplica b [] = []
+multiplica b (x:xs) = (b * x) : multiplica b xs
+
+
