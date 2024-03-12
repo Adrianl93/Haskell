@@ -5,6 +5,7 @@
 -- contar.[ ] ≐ 0
 -- contar.(x ▹ xs) ≐ 1 + contar.xs
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+import System.Win32 (COORD(xPos))
 {-# HLINT ignore "Use foldr" #-}
 {-# HLINT ignore "Use map" #-}
 {-# HLINT ignore "Use odd" #-}
@@ -193,6 +194,84 @@ repetir n m = m + repetir (n-1) m
 potencia :: Int -> Int -> Int
 potencia b 1 = b
 potencia b p = b *  potencia b (p-1) 
+
+
+-- Más funciones recursivas
+-- Ejercicio 13: Una función de tipo zip es aquella que dadas dos listas devuelve una lista de pares donde el primer elemento de cada par se corresponde con la primera lista, y el segundo elemento de cada par se corresponde con la segunda lista. Por ejemplo: repartir: [String] → [String] → [(String, String)] donde los elementos de la primera lista son nombres de personas y los de la segunda lista son cartas españolas es una función que devuelve una lista de pares que le asigna a cada persona una carta.
+-- Ej: repartir.[“Juan”, “Maria”].[“1deCopa”, “3deOro”, “7deEspada”, “2deBasto”] =
+--    [(“Juan”, “1deCopa”), (“Maria”, “3deOro”)]
+-- Defina la función recursivamente.
+repartir :: [String] -> [String] -> [(String,String)]
+repartir [] [] = []
+repartir [x] [] = []
+repartir [] x = []
+repartir (x:xs) (y:ys) = (x,y) : repartir xs ys
+
+-- Ejercicio 14: Una función de tipo unzip es aquella que dada una lista de tuplas devuelve una lista de alguna de las proyecciones de la tupla. Por ejemplo, si tenemos una lista de ternas donde el primer elemento representa el nombre de un alumno, el segundo el apellido, y el tercero la edad, la función que devuelve la lista de todos los apellidos de los alumnos en una de tipo unzip.
+-- Definir la función apellidos : [(String, String, Int)] → [String]
+-- Ej: apellidos.[(”Juan”, ”Dominguez”, 22), (”Maria”, ”Gutierrez”, 19), (”Damian”, ”Rojas”, 18)] =
+-- [”Dominguez””Gutierrez”, ”Rojas”]
+-- Defina la función recursivamente.
+
+apellidos :: [(String, String, Int)] -> [String]
+apellidos [] = []
+apellidos ((x, y , z): xs) =  y : apellidos xs 
+
+
+-- Ejercicio 15: Definí funciones por recursión para cada una de las siguientes descripciones. Luego, implementarlas en Haskell.
+-- a) maximo : [Int] → Int, que calcula el máximo elemento de una lista de enteros.
+-- Por ejemplo: maximo.[2, 5, 1, 7, 3] = 7
+-- Ayuda: Ir tomando de a dos elementos de la lista y ‘quedarse’ con el mayor. ¡Cuidado con el caso base!
+
+maximo :: [Int] -> Int
+maximo [] = 0
+maximo (x:xs) = max x (maximo xs)
+
+-- b) sumaPares : [(Num, Num)] → Num, que dada una lista de pares de números, devuelve la sumatoria de todos los números de todos los pares.
+-- Por ejemplo: sumaPares.[(1, 2), (7, 8), (11, 0)] = 29
+
+sumaPares :: [(Int,Int)] -> Int
+sumaPares [] = 0
+sumaPares ((x,y):xs) = x + y + sumaPares xs 
+
+-- c) todos0y1 : [Int] → Bool, que dada una lista devuelve True si ésta consiste sólo de 0s y 1s.
+-- Por ejemplo: todos0y1.[1, 0, 1, 2, 0, 1] = False, todos0y1.[1, 0, 1, 0, 0, 1] = True
+
+todos0y1 :: [Int] -> Bool
+todos0y1 [] = True
+todos0y1 (x:xs) = (x==0 || x == 1) && todos0y1 xs
+-- d) quitar0s : [Int] → [Int] que dada una lista de enteros devuelve la lista pero quitando todos los ceros.
+-- Por ejemplo: quitar0s.[2, 0, 3, 4] = [2, 3, 4]
+
+quitar0s :: [Int] -> [Int]
+quitar0s [] = []
+quitar0s (x:xs) | x /= 0 = x : quitar0s xs
+                | x == 0 = quitar0s xs 
+-- e) ultimo: [A] → A, que devuelve el último elemento de una lista.
+-- Por ejemplo: ultimo.[10, 5, 3, 1] = 1
+ultimo :: [a] -> a
+ultimo [a] = a
+ultimo (x:xs) |length (x:xs) == 1 = x
+              |length (x:xs) > 1 = ultimo xs
+-- f) repetir : Num → Num → [Num], que dado un número n mayor o igual a 0 y un número k arbitrario construye una lista donde k aparece repetido n veces.
+-- Por ejemplo: repetir.3.6 = [6, 6, 6]
+-- g) concat : [[A]] → [A] que toma una lista de listas y devuelve la concatenación de todas ellas.
+-- Por ejemplo: concat.[[1, 4], [], [2]] = [1, 4, 2]
+-- h) rev : [A] → [A] que toma una lista y devuelve una lista con los mismos elementos pero en orden inverso.
+-- Por ejemplo: rev.[1, 2, 3] = [3, 2, 1]
+-- i) Definir la función noEstá: Char -> [Char] -> Bool que determina que una letra está ausente en una palabra.
+-- Por ejemplo:
+-- noEstá . ‘o’. [f,a,m,a,f] = True
+-- noEstá . ‘f’. [f,a,m,a,f] = False
+-- j) Definí la función sumaPond : [(Int, Int)] -> Int que dada una lista de pares de enteros suma cada segundo elemento multiplicado por el primero. 
+-- Por ejemplo: 
+-- sumaPond.[(3, 7), (0, 100), (2, 4)] = 29
+-- sumaPond.[(1, 3), (2, 9)] = 1*3 + 2*9 = 3 + 18 = 21
+-- k) Definí la función sinA : [String] -> [String] que una lista de palabras devuelve las que no tienen letra ‘a’. (recordar que String = [Char])
+-- Por ejemplo: 	sinA.[”ocelote”, “murcielago”, “proboscidio”] = [”ocelote”, “proboscidio”]
+
+
+
 
 
 -- Problemas
