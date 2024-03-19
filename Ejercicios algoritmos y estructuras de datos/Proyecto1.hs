@@ -132,4 +132,25 @@ productoria' (x : xs) t = t x * productoria' xs t
 -- ejercicio 5
 
 paraTodo'' :: [a] -> (a -> Bool) -> Bool
-paraTodo'' (x:xs) t = t x && paraTodo'' xs t
+paraTodo'' xs t = paraTodo' xs t
+
+--paraTodo'' [2, 4, 5] (>0) --> True
+--paraTodo'' [2, 4, 5] (>4) --> False
+
+
+--ejercicio 6
+--a)
+todosPares :: [Int] -> Bool
+todosPares xs = paraTodo' xs even
+
+--todosPares [2, 4, 6] --> True
+--todosPares [2, 4, 5] --> False
+
+--b)
+hayMultiplo :: Int -> [Int] -> Bool
+hayMultiplo y xs = existe' xs esMultiplo
+                   where esMultiplo x = mod x y == 0
+
+--hayMultiplo 2 [2, 4, 6, 8] --> True
+--hayMultiplo 3 [2, 4, 6, 8] --> True
+--hayMultiplo 5 [2, 4, 6, 8] --> False
