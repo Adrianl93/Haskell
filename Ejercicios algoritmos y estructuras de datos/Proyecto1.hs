@@ -154,3 +154,82 @@ hayMultiplo y xs = existe' xs esMultiplo
 --hayMultiplo 2 [2, 4, 6, 8] --> True
 --hayMultiplo 3 [2, 4, 6, 8] --> True
 --hayMultiplo 5 [2, 4, 6, 8] --> False
+
+
+--c)
+
+sumaCuadrados :: Int -> Int 
+sumaCuadrados n = sumatoria' [0..n] (^2) 
+
+-- sumaCuadrados 4 --> 30
+-- sumaCuadrados 2 --> 55
+
+--d)
+
+existeDivisor :: Int -> [Int] -> Bool
+existeDivisor n xs = existe' xs esDivisor
+                    where esDivisor x = mod n x == 0
+
+
+--existeDivisor 8 [2, 4, 8] --> True
+--existeDivisor 2 [3, 4, 8] --> False
+
+
+--e)
+-- Utilizando la funcion del apartado anterior, definı la funci ́on esPrimo:: Int -> Bool,
+-- que dado un entero n, devuelve True si y solo si n es primo.
+-- Ayuda: En Haskell se puede escribir la lista que contiene el rango de n ́umeros entre n
+-- y m como [n..m].
+
+esPrimo :: Int -> Bool
+esPrimo n = not (existeDivisor n [2..n-1])
+
+-- esPrimo 5 --> True
+-- esPrimo 7 --> True
+-- esPrimo 8 --> True
+
+
+-- f )
+
+factorial' :: Int -> Int
+factorial' n = productoria' [1..n] (*1)
+
+--factorial' 4 --> 24
+--factorial' 3 --> 6
+
+--g)
+
+multiplicaPrimos :: [Int] -> Int 
+multiplicaPrimos xs = productoria' (filter esPrimo xs) (*1)
+
+--multiplicaPrimos [2, 3, 5, 8] --> 30
+--multiplicaPrimos [2,3,8,12] --> 6
+
+-- h)
+-- Programar la funcion esFib :: Int -> Bool, que dado un entero n, devuelve True
+-- si y s´olo si n est´a en la sucesi´on de Fibonacci.
+-- Ayuda: Realizar una funcion auxiliar fib :: Int -> Int que dado un n devuelva el enesimo elemento de la sucesion.
+
+fib :: Int -> Int
+fib n | n == 0 = 0
+      | n == 1 = 1
+      | otherwise = fib (n - 1) + fib (n - 2)
+
+
+esFib :: Int -> Bool
+esFib n = existe' (takeWhile (<= n) [fib i | i <- [0..]]) (== n)
+
+
+-- esFib 144 --> True
+-- esFib 10 --> False
+
+--i)
+-- Utilizando la funci ́on del apartado anterior, defin ́ı la funci ́on todosFib :: [Int] -> Bool
+-- que dada una lista xs de enteros, devuelva si todos los elementos de la lista pertenecen
+-- (o no) a la sucesi ́on de Fibonacci.
+
+todosFib :: [Int] -> Bool
+todosFib xs = paraTodo' xs esFib  
+
+--todosFib [34, 55, 89] --> True
+--todosFib [34, 55, 88] --> True
