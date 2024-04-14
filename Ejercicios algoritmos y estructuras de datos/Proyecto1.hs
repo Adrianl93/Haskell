@@ -153,7 +153,7 @@ todosPares xs = paraTodo' xs even
 --b)
 hayMultiplo :: Int -> [Int] -> Bool
 hayMultiplo y xs = existe' xs esMultiplo
-                   where esMultiplo x = mod x y == 0
+                  where esMultiplo x = mod x y == 0
 
 --hayMultiplo 2 [2, 4, 6, 8] --> True
 --hayMultiplo 3 [2, 4, 6, 8] --> True
@@ -161,12 +161,12 @@ hayMultiplo y xs = existe' xs esMultiplo
 
 
 --c)
+sumaCuadrados :: Int -> Int
+sumaCuadrados n = sumatoria' [0..n] (^2)
 
-sumaCuadrados :: Int -> Int 
-sumaCuadrados n = sumatoria' [0..n] (^2) 
+--sumaCuadrados 2 --> 5
+--sumaCuadrados 4 --> 30
 
--- sumaCuadrados 4 --> 30
--- sumaCuadrados 2 --> 55
 
 --d)
 
