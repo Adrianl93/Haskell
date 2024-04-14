@@ -153,7 +153,7 @@ todosPares xs = paraTodo' xs even
 --b)
 hayMultiplo :: Int -> [Int] -> Bool
 hayMultiplo y xs = existe' xs esMultiplo
-                   where esMultiplo x = mod x y == 0
+                  where esMultiplo x = mod x y == 0
 
 --hayMultiplo 2 [2, 4, 6, 8] --> True
 --hayMultiplo 3 [2, 4, 6, 8] --> True
@@ -161,31 +161,12 @@ hayMultiplo y xs = existe' xs esMultiplo
 
 
 --c)
-<<<<<<< HEAD
 sumaCuadrados :: Int -> Int
 sumaCuadrados n = sumatoria' [0..n] (^2)
 
 --sumaCuadrados 2 --> 5
---sumaCuadrados 4 --> 5
+--sumaCuadrados 4 --> 30
 
-
---d)Programar la fuci ́on existeDivisor::Int-> [Int] -> Bool, que dado en entero n y una lista ls , devuelve True si y solo si, existe alg ́un elemento en ls que divida a n.
-
-existeDivisor::Int-> [Int] -> Bool
-existeDivisor n xs = existe' xs esDivisor
-                    where esDivisor x = mod n x == 0
-
---existeDivisor 8 [2, 4, 8] --> True
---existeDivisor 8 [3, 5, 7] --> False
-
---e)
-=======
-
-sumaCuadrados :: Int -> Int 
-sumaCuadrados n = sumatoria' [0..n] (^2) 
-
--- sumaCuadrados 4 --> 30
--- sumaCuadrados 2 --> 55
 
 --d)
 
@@ -388,4 +369,3 @@ primIguales' (x:xs) = primIgualesA' x xs
 --primIguales [2, 3, 4, 5] --> [2]
 --primIguales [2, 2, 2, 4, 5, 5, 5] --> [2, 2, 2]
 --primIguales "aaaabbb" --> "aaaa"
->>>>>>> d22c8c6f0b15c44f9dfd5b0348545f3908b477c4
