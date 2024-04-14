@@ -154,3 +154,23 @@ hayMultiplo y xs = existe' xs esMultiplo
 --hayMultiplo 2 [2, 4, 6, 8] --> True
 --hayMultiplo 3 [2, 4, 6, 8] --> True
 --hayMultiplo 5 [2, 4, 6, 8] --> False
+
+
+--c)
+sumaCuadrados :: Int -> Int
+sumaCuadrados n = sumatoria' [0..n] (^2)
+
+--sumaCuadrados 2 --> 5
+--sumaCuadrados 4 --> 5
+
+
+--d)Programar la fuci ́on existeDivisor::Int-> [Int] -> Bool, que dado en entero n y una lista ls , devuelve True si y solo si, existe alg ́un elemento en ls que divida a n.
+
+existeDivisor::Int-> [Int] -> Bool
+existeDivisor n xs = existe' xs esDivisor
+                    where esDivisor x = mod n x == 0
+
+--existeDivisor 8 [2, 4, 8] --> True
+--existeDivisor 8 [3, 5, 7] --> False
+
+--e)
