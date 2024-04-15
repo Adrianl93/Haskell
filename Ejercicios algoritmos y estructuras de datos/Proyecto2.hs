@@ -165,3 +165,120 @@ contar_futbolistas' deportistas z = length (filter (esFutbolistaDeZona z) deport
           esFutbolistaDeZona _ _ = False
 
 --contar_futbolistas' deportistas Arco  --> 1
+
+
+--Ejercicio 5 Definición de clases
+
+--a) Implementa la funcion sonidoNatural como esta definida arriba.
+
+sonidoNatural :: NotaBasica -> Int
+sonidoNatural Do = 0
+sonidoNatural Re = 2
+sonidoNatural Mi = 4
+sonidoNatural Fa = 5
+sonidoNatural Sol = 7
+sonidoNatural La = 9
+sonidoNatural Si = 11
+
+
+--b) Definir el tipo enumerado Alteracion que consta de los constructores Bemol, Natural y Sostenido.
+
+data Alteracion = Bemol | Natural  | Sostenido deriving (Eq, Ord, Show)
+
+
+--c) Definir el tipo NotaMusical que consta de un unico constructor que toma dos parametros. El primer parametro es de tipo NotaBasica y el segundo de tipo Alteracion. De esta manera cuando se quiera representar una nota alterada se puede usar como segundo parametro del constructor un Bemol o Sostenido y si se quiere representaruna nota sin alteraciones se usa Natural como segundo parametro.
+
+data NotaMusical =  NotaMusical NotaBasica Alteracion deriving (Eq,Ord,Show)
+
+
+--d)Definı la funcion sonidoCromatico :: NotaMusical -> Int que devuelve el sonido de una nota, incrementando en uno su valor si tiene la alteracion Sostenido, decrementando en uno si tiene la alteracion Bemol y dejando su valor intacto si la alteraciones Natural
+
+sonidoCromatico :: NotaMusical -> Int
+sonidoCromatico (NotaMusical nota Natural) = sonidoNatural nota
+sonidoCromatico (NotaMusical nota Bemol) = sonidoNatural nota - 1
+sonidoCromatico (NotaMusical nota Sostenido) = sonidoNatural nota +1
+
+-- declaro estos valores en GHCI
+
+--    let nota1 = NotaMusical Do Natural
+--        nota2 = NotaMusical Re Bemol
+--        nota3 = NotaMusical Sol Sostenido
+--        nota4 = NotaMusical Re Bemol
+
+
+   --sonidoCromatico nota 1 --> 0
+   --sonidoCromatico nota 2 --> 1
+   --sonidoCromatico nota 3 --> 8
+
+--e) Incluı el tipo NotaMusical a la clase Eq de manera tal que dos notas que tengan el mismo valor de sonidoCromatico se consideren iguales.
+
+--sonidoCromatico nota2 == sonidoCromatico nota4  --> True
+
+--f) Incluı el tipo NotaMusical a la clase Ord definiendo el operador <=. Se debe definir que una nota es menor o igual a otra si y solo si el valor de sonidoCromatico para la primera es menor o igual al valor de sonidoCromatico para la segunda.
+
+--sonidoCromatico nota1 > sonidoCromatico nota2
+--sonidoCromatico nota1 <= sonidoCromatico nota2 
+
+
+
+--Ejercicio 6 Tipos enumerados con polimorfismo
+
+--a) Definir la funcion primerElemento que devuelve el primer elemento de una lista no vacıa, o Nothing si la lista es vacıa.
+
+primerElemento :: [a] -> Maybe a
+primerElemento [] = Nothing
+primerElemento (x : _) = Just x
+
+--Ejercicio 7 Tipos Recursivos
+
+data Cola = VaciaC | Encolada Deportista Cola 
+
+--a) Programa las siguientes funciones:
+
+-- -- Definición de algunos deportistas para testeo
+
+
+deportista1 :: Deportista
+deportista1 = Velocista 170
+
+deportista2 :: Deportista
+deportista2 = Tenista DosManos Izquierda 180
+
+deportista3 :: Deportista
+deportista3 = Futbolista Delantera 10 Derecha 175
+
+
+-- Cola vacía
+colaVacia :: Cola
+colaVacia = VaciaC
+
+-- Cola con algunos deportistas
+miCola :: Cola
+miCola = encolar deportista1 (encolar deportista2 (encolar deportista3 colaVacia))
+
+-- 1) atender :: Cola -> Maybe Cola, que elimina de la cola a la persona que esta en la primer posicion de una cola, por haber sido atendida. Si la cola esta vacıa,devuelve Nothing.
+
+atender :: Cola -> Maybe Cola
+atender VaciaC = Nothing
+atender (Encolada _ cola) = Just cola
+
+--2) encolar :: Deportista -> Cola -> Cola, que agrega una persona a una cola de deportistas, en la ultima posicion.
+
+encolar :: Deportista -> Cola -> Cola
+encolar deportista VaciaC = Encolada deportista VaciaC
+encolar deportista (Encolada dep colaRestante) = Encolada dep (encolar deportista colaRestante)
+
+
+--3) busca :: Cola -> Zona -> Maybe Deportista, que devuelve el/la primera futbolista dentro de la cola que juega en la zona que se corresponde con el segundopaametro. Si no hay futbolistas jugando en esa zona devuelve Nothing.
+
+busca :: Cola -> Zona -> Maybe Deportista
+busca VaciaC _ = Nothing
+busca (Encolada deportista colaRestante) zona =
+    case deportista of
+        Futbolista zonaDeporte _ _ _ | zonaDeporte == zona -> Just deportista
+        _ -> busca colaRestante zona
+
+--b) ¿A que otro tipo se parece Cola?
+
+-- Cola podria parecerse bastante a una Lista, con la diferencia de que no hay acceso rapido al último elemento de la cola, y su funcionamiento es del tipo First In First Out similar a una cola de supermercado, o en inglés Queue.
+
