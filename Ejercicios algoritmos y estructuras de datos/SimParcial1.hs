@@ -1,9 +1,11 @@
 {-# LANGUAGE NPlusKPatterns #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+import Distribution.Simple (KnownExtension(NumericUnderscores))
 {-# HLINT ignore "Use foldr" #-}
 {-# HLINT ignore "Eta reduce" #-}
 {-# HLINT ignore "Use map" #-}
 {-# HLINT ignore "Redundant bracket" #-}
+{-# HLINT ignore "Use camelCase" #-}
 
 --Ejercicio 1: Definir el tipo EmpresaTelefono cuyos constructores seran Claro, Personal, Movistar y Tuenti. Defini un tipo Frase como sinonimo de String y defini la función
 
@@ -116,7 +118,7 @@ deporte' (AgregaDeporte deporte nombre restantes') deporteBuscado nombreBuscado
 -- deporte' deportesPracticados Futbol "Adrian" --> True
 
 
---Ejercicio 3: Defina el tipo EquipoFavorito como sinonimo de String, usando la definicion de listaAsoc del proyecto 2 para programar la funcion:
+--Ejercicio 3': Defina el tipo EquipoFavorito como sinonimo de String, usando la definicion de listaAsoc del proyecto 2 para programar la funcion:
 
 --agregaEquipoFavorito :: ListaAsoc Deporte EquipoFavorito -> Deporte -> EquipoFavorito -> ListaAsoc Deporte EquipoFavorito
 
@@ -138,3 +140,75 @@ agregaEquipoFavorito (Nodo d e restantes'') deporte equipo = Nodo d e (agregaEqu
 --let listaConBasket = agregaEquipoFavorito listaConTenis Basket "Lakers"
 
 --listaConBasket --> Nodo Futbol "Boca" (Nodo Tenis "Nadal" (Nodo Basket "Lakers" Vacia))
+
+
+--Parcial 2022 tema A
+
+--Ejercicio 1''
+
+--a)Definir el tipo Palo que consta de los constructores Treboles, Corazones, Picas,Diamantes. Los constructores no toman parámetros. El tipo Palo no debe estar en la clase Eq. Luego programa la función usando pattern matching:
+
+--mismo_palo :: Palo -> Palo -> Bool
+--que dados dos valores p1 y p2 del tipo Palo debe devolver True cuando p1 y p2 son el mismo palo (se construyen con el mismo constructor) y False en caso contrario. Si se usan más de cinco casos, este apartado sumará menos puntaje.
+
+data Palo = Treboles | Corazones | Picas | Diamantes deriving (Show)
+
+mismo_palo :: Palo -> Palo -> Bool 
+mismo_palo Treboles Treboles = True
+mismo_palo Corazones Corazones = True
+mismo_palo Picas Picas = True
+mismo_palo Diamantes Diamantes = True
+mismo_palo _ _ = False
+
+--b) Definir el tipo Naipe que representa una carta de poker. Tiene constructores:
+-- Constructor Numerada: Toma dos parámetros, el primero de tipo Numero y el segundo de tipo Palo
+-- Constructores Rey, Reina, Jota, As: Todos son constructores con un sólo parámetro de tipo Palo
+--El tipo Numero debe ser un sinónimo del tipo Int.
+type Numero = Int
+data Naipe = Numerada Numero Palo | Rey Palo | Reina Palo | Jota Palo | As Palo  deriving (Show)
+
+
+--c) Programar la función
+--valor_naipe :: Naipe -> Int
+--teniendo en cuenta que el valor de una carta será:
+--Si es una carta numerada : Su valor es el número de la carta.
+--Si es el naipe Jota : Su valor es 11
+--Si es el naipe Reina : Su valor es 12
+--Si es el naipe Rey : Su valor es 13
+--Si es el naipe As : Su valor es 14
+
+valor_naipe :: Naipe -> Int
+valor_naipe (Jota _) = 11
+valor_naipe (Reina _) = 12
+valor_naipe (Rey _)= 13
+valor_naipe (As _)= 14
+valor_naipe (Numerada n _) = n
+
+--valor_naipe (Jota Corazones) --> 11
+--valor_naipe (Numerada 2 Corazones) --> 2
+
+--d) Incluir el tipo Naipe en la clase Ord de manera tal que un naipe se considere mayor que otro si su valor según la función valor_naipe es más grande.
+instance Eq Naipe where
+    (==) :: Naipe -> Naipe -> Bool
+    (Numerada n1 p1) == (Numerada n2 p2) = n1 == n2 && mismo_palo p1 p2
+    (Rey p1) == (Rey p2) =  mismo_palo p1 p2
+    (Reina p1) == (Reina p2) =  mismo_palo p1 p2
+    (Jota p1) == (Jota p2) =  mismo_palo p1 p2
+    (As p1) == (As p2)  = mismo_palo p1 p2
+
+    _ == _ = False
+instance Ord Naipe where
+    compare :: Naipe -> Naipe -> Ordering
+    compare naipe1 naipe2 = compare (valor_naipe naipe1) (valor_naipe naipe2) 
+
+    --Numerada 10 Corazones > Rey Treboles --> False
+
+    --Ejercicio 2
+    
+--a) Programar de manera recursiva la función
+
+--solo_numeradas :: [Naipe] -> Palo -> [Numero]
+
+--que dada una lista de cartas ns y un palo p devuelve una lista con los números de las cartas numeradas (las que no son ases, jotas, reyes ni reinas) de ns que son del palo p.
+--b) Escribir una lista de naipes con al menos tres elementos, donde uno de ellos debe ser una figura, y otro debe ser una carta numerada.
+--c) Escribir el resultado de solo_numeradas para la lista del punto b)
