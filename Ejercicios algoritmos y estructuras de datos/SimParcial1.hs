@@ -203,12 +203,148 @@ instance Ord Naipe where
 
     --Numerada 10 Corazones > Rey Treboles --> False
 
-    --Ejercicio 2
+
+
+--Ejercicio 2''
     
 --a) Programar de manera recursiva la función
 
 --solo_numeradas :: [Naipe] -> Palo -> [Numero]
 
 --que dada una lista de cartas ns y un palo p devuelve una lista con los números de las cartas numeradas (las que no son ases, jotas, reyes ni reinas) de ns que son del palo p.
+
+
+
+--aux 
+valor_palo :: Naipe -> Palo
+valor_palo (Numerada _ palo) = palo
+valor_palo (Rey palo) = palo
+valor_palo (Reina palo) = palo
+valor_palo (Jota palo) = palo
+valor_palo (As palo) = palo
+
+es_numerada :: Naipe -> Bool
+es_numerada (Numerada _ _) = True
+es_numerada _ = False
+
+
+
+
+solo_numeradas :: [Naipe] -> Palo -> [Numero]
+solo_numeradas [] _ = []
+solo_numeradas (x: ns) p 
+                        | es_numerada x && mismo_palo (valor_palo x) p = valor_naipe x : solo_numeradas ns p
+                        | otherwise = solo_numeradas ns p
+
+
 --b) Escribir una lista de naipes con al menos tres elementos, donde uno de ellos debe ser una figura, y otro debe ser una carta numerada.
+
+--let listaNaipes = [Numerada 4 Treboles, Rey Diamantes, Numerada 7 Treboles]
+
+
 --c) Escribir el resultado de solo_numeradas para la lista del punto b)
+
+--solo_numeradas listaNaipes Treboles  --> [4,7] 
+--solo_numeradas listaNaipes Corazones --> []
+
+--Ejercicio 3
+--Basados en el tipo ListaAsocdel Proyecto 2, programar la función:
+--la_menores :: ListaAsoc a b -> b -> ListaAsoc a b
+--que dada una lista de asociaciones la y un dato x devuelve una nueva lista de asociaciones con las asociaciones de la cuyos valores son menores que x. Completar el tipado de la función para incluir los type classes necesarios para programarla. 
+la_menores :: (Ord b) => ListaAsoc a b -> b -> ListaAsoc a b
+la_menores Vacia _ = Vacia
+la_menores (Nodo k v restante) x
+    | v < x = Nodo k v (la_menores restante x)
+    | otherwise = la_menores restante x
+
+
+
+
+--Parcial 2022 tema B
+
+--Ejercicio 1'''
+--Van a representar canciones que se pueden escuchar en un servicio de streaming en modalidad gratuita como Spotify, Youtube, SoundCloud, etc. Para ello deben 
+
+
+--a) Definir los tipos Titulo y Artista como sinónimos del tipo String y el tipo Duracion como sinónimo del tipo Int. Además se debe definir el tipo Genero, con constructores Rock, Blues, Pop, Jazz (todos sin parámetros).
+
+--El tipo Genero no debe estar en la clase Eq.
+
+--Por último deben definir el tipo Cancion que tiene constructores:
+
+-- Constructor Tema con parámetros:
+--El primero de tipo Titulo
+--El segundo del tipo Artista
+--El tercero del tipo Genero
+--El cuarto del tipo Duracion (la cantidad de segundos que dura la canción)
+
+--Constructor Publicidad que tiene un único parámetro Duracion(cantidad de segundos que dura la molesta publicidad)
+
+type Titulo = String
+type Artista = String
+type Duracion = Int
+data Genero = Rock | Blues | Pop | Jazz deriving (Show)
+
+data Cancion = Tema Titulo Artista Genero Duracion | Publicidad Duracion deriving (Show)
+
+--b) Definir mediante pattern matching la función mismo_genero :: Genero -> Genero -> Bool 
+--que dados dos valores g1 y g2 del tipo Genero, debe devolver True cuando g1 y g2 correspondan al mismo género musical (se construyen con el mismo constructor) y False en caso contrario. Si se usan más de cinco casos, este apartado sumará menos puntaje.
+
+mismo_genero :: Genero -> Genero -> Bool
+mismo_genero Rock Rock = True 
+mismo_genero Blues Blues= True 
+mismo_genero Pop  Pop= True 
+mismo_genero Jazz Jazz = True 
+mismo_genero _ _ = False
+
+--mismo_genero Rock Rock --> True
+
+--c) Definir la función duracion_de :: Cancion -> Duracion que dada una canción c devuelve la cantidad de segundos que dura su reproducción (ya sea un tema musical o una publicidad).
+
+duracion_de :: Cancion -> Duracion
+duracion_de (Tema _ _ _ duracion) = duracion
+duracion_de (Publicidad duracion) = duracion
+
+--let cancion1 = Tema "Nombre1" "Artista1" Rock 240
+
+--duracion_de cancion1--> 240
+
+
+--d) Incluir el tipo Cancion en la clase Ord de manera tal que una canción c1 sea menor o igual que otra canción c2 si la duración de c1 es menor o igual que la duración de c2.
+
+
+instance Eq Cancion where
+    (==) :: Cancion -> Cancion -> Bool
+    (Tema _ _ _ duracion1) == (Tema _ _ _ duracion2) = duracion1 == duracion2
+    (Publicidad duracion1) == (Publicidad duracion2) = duracion1 == duracion2
+    _ == _ = False
+
+
+instance Ord Cancion where
+    compare :: Cancion -> Cancion -> Ordering
+    compare (Tema _ _ _ duracion1) (Tema _ _ _ duracion2) = compare duracion1 duracion2
+    compare (Publicidad duracion1) (Publicidad duracion2) = compare duracion1 duracion2
+    compare (Tema _ _ _ duracion1) (Publicidad duracion2) = compare duracion1 duracion2
+    
+    --let cancion1 = Tema "Nombre1" "Artista1" Rock 240
+    --let publicidad = Publicidad 30
+
+    -- cancion1 == publicidad --> False
+    -- cancion1 > publicidad --> True
+    -- cancion1 < publicidad --> False
+
+
+--Ejercicio 2
+
+--Definir usando recursión y pattern matching:
+--solo_genero :: [Cancion] -> Genero -> [Titulo]
+--que dada una lista de canciones cs y un género gi devuelve los títulos de las canciones en cs que son temas musicales con género gi
+--IMPORTANTE: No se puede utilizar el operador == para hacer la comparación entre valores del tipo Genero puesto que el tipo no está en la clase Eq
+
+solo_genero :: [Cancion] -> Genero -> [Titulo]
+solo_genero [] gi = []
+solo_genero ((Tema titulo _ gen _):cs) gi | mismo_genero gen gi = titulo : solo_genero cs gi
+solo_genero ((Publicidad _):cs) gi = solo_genero cs gi
+solo_genero (_:cs) gi = solo_genero cs gi
+
+--let cancionesEjemplo = [Tema "Cancion 1" "Artista 1" Rock 200, Tema "Cancion 2" "Artista 2" Pop 180, Publicidad 30,Tema "Cancion 3" "Artista 3" Rock 220,Tema "Cancion 4" "Artista 4" Pop 190,Tema "Cancion 5" "Artista 5" Blues 210]
